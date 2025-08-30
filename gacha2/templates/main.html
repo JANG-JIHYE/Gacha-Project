@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ガチャコ</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        ntegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin　="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="static/css/main.css" />
+<link rel="stylesheet" type="text/css" href="static/css/mypage.css" /> 
+</head>
+
+<body>
+<header class="header">
+    <div class="top-bar">
+        <a href="/" class="logo">
+                <span class="logo-text">ガチャコ</span>
+                <div class="gacha-machine">
+                    <div class="machine-top"></div>
+                    <div class="machine-body">
+                        <div class="machine-window">
+                            <div class="machine-ball"></div>
+                        </div>
+                    </div>
+                    <div class="machine-controls">
+                        <div class="control-button"></div>
+                        <div class="control-knob"></div>
+                    </div>
+                </div>
+            </a>
+        <div class="auth-buttons" id="authButtons">
+            <button class="btn btn-login" onclick="openLoginModal()">ログイン</button>
+            <button class="btn btn-signup" onclick="openSignupModal()">新規登録</button>
+        </div>
+    </div>
+    <nav class="nav-menu">
+        <ul class="nav-list">
+            <li class="nav-item"><a href="/gachainfopage">ガチャリスト</a></li>
+            <li class="nav-item"><a href="/map">ガチャマップ</a></li>
+            <li class="nav-item"><a href="/gacha_board">掲示板</a></li>
+            <li class="nav-item"><a href="/#mypage" onclick="showMyPage()">マイページ</a></li>
+            <li class="nav-item"><a href="#" onclick="showSettings(); return false;">設定</a>
+        </ul>
+    </nav>
+</header>
+
+<main class="main-content" id="mainContent">
+    <div class="search-container">
+        <div class="search-wrapper">
+            <input class="search-input" autocomplete="off" placeholder="ガチャ、店舗、ポストを検索します。" type="text"/>
+            <button class="search-btn"  title="検索">
+                <svg class="search-icon" viewBox="0 0 24 24">
+                    <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 5 1.49-1.49-5-5zM9.5 14C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                </svg>
+            </button>
+
+            <button class="voice-search-btn"  title="音声検索">
+                <svg class="voice-icon" viewBox="0 0 24 24">
+                    <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"></path>
+                    <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+    <div class="banner-container">
+        <div class="banner-slider">
+            <div class="banner-track" id="bannerTrack">
+            <div class="banner-slide">
+                <div class="banner-content">
+                    <h3 class="banner-title">限定ガチャ新登場！</h3>
+                    <p class="banner-subtitle">今だけの特別アイテムをゲット！</p>
+                    <button class="banner-btn" onclick="alert('新商品ページへ移動')">詳細を見る</button>
+                </div>
+                <div class="banner-image">🎁</div>
+            </div>
+            <div class="banner-slide">
+                <div class="banner-content">
+                    <h3 class="banner-title">春の大感謝祭</h3>
+                    <p class="banner-subtitle">全品30%OFF！お得なチャンス</p>
+                    <button class="banner-btn" onclick="alert('セール会場へ移動')">今すぐ購入</button>
+                </div>
+                <div class="banner-image">🌸</div>
+            </div>
+            <div class="banner-slide">
+                <div class="banner-content">
+                <h3 class="banner-title">新エリア開放</h3>
+                <p class="banner-subtitle">新しいガチャスポットが追加！</p>
+                <button class="banner-btn" onclick="alert('マップを確認')">マップを見る</button>
+                </div>
+                <div class="banner-image">🗺️</div>
+            </div>
+            </div>
+        </div>
+    <div class="banner-controls">
+        <div class="banner-dot active" onclick="goToSlide(0)"></div>
+        <div class="banner-dot" onclick="goToSlide(1)"></div>
+        <div class="banner-dot" onclick="goToSlide(2)"></div>
+    </div>
+    </div>
+
+    <div class="action-buttons">
+    <a class="action-btn map-btn" href="/map" onclick="alert('地図ページへ移動')" style="flex: 0.5;">
+    <div class="action-btn-icon">🗺️</div><div class="action-btn-title">ガチャマップ</div><div class="action-btn-subtitle">地図から探す</div></a>
+    <a class="action-btn list-btn" href="/gachainfopage" onclick="alert('リストページへ移動')" style="flex: 0.5;">
+    <div class="action-btn-icon">💊</div>
+    <div class="action-btn-title">ガチャリスト</div>
+    <div class="action-btn-subtitle">すべてのガチャを見る</div>
+    </a>
+    </div>
+    <button class="board-btn" onclick="window.location.href='/gacha_board'">
+    <svg class="board-icon" viewbox="0 0 24 24">
+    <path d="M3 4h18v2H3V4zm0 6h12v2H3v-2zm0 6h18v2H3v-2z"></path>
+    </svg>
+        掲示板
+    </button>
+</main>
+
+<div id="searchResultSection" style="display:none; max-width:1200px; margin:40px auto; background:white; border-radius:20px; box-shadow:0 0 30px #e91e6322; padding:40px;">
+    <button onclick="showMainContent()" style="float:right; background:#e91e63; color:white; border:none; border-radius:8px; padding:8px 18px; cursor:pointer;">← 後戻り</button>
+    <h2 id="searchResultTitle" style="margin-top:0"></h2>
+    <div id="searchResultBody"></div>
+</div>
+
+
+<main class="main-content" id="mypageContent" style="display: none;">
+    <h2 style="font-size: 28px; font-weight: 800; color: #e91e63; margin-bottom: 30px;">マイページ</h2>
+    
+    <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 30px;">
+        <button class="btn btn-login" onclick="showMyPageSection('favorite')">お気に入り</button>
+        <button class="btn btn-login" onclick="showMyPageSection('posts'); showMyPosts();">投稿一覧</button>
+        <button class="btn btn-login" onclick="showMyPageSection('comments'); showMyCommentedPosts();">コメント一覧</button>
+        <button class="btn btn-login" onclick="showMyPageSection('likes'); showMyLikedPosts();">いいね一覧</button>
+        <button class="btn btn-login" onclick="showMyPageSection('profile')">プロフィール編集</button>
+    </div>
+
+    <div id="favorite-section" style="display: none;">
+        <h3>お気に入り</h3>
+
+        <button class="btn btn-small" onclick="showMyFavoriteGachas()">お気に入り商品</button>
+        <button class="btn btn-small" onclick="showMyFavoriteShops()">お気に入り店舗</button>
+
+        <div id="gacha-list-container"></div>
+        <div id="favorite-shops-container"></div>
+    </div>
+        
+        <div id="gacha-list-container" style="margin-top: 15px; display: none;"></div>
+        <!-- 찜한 상품 목록 -->
+        <div id="favorite-products" style="margin-top: 15px; display: none;"></div>
+
+        <!-- 찜한 점포 목록 -->
+        <div id="favorite-shops" style="margin-top: 15px; display: none;"></div>
+    </div>
+
+    <div id="posts-section" style="display: none;">
+        <h3 style="margin-bottom: 15px;">投稿した内容</h3>
+        <p>ここにあなたの投稿が表示されます。</p>
+    </div>
+
+    <div id="comments-section" style="display: none;">
+        <h3 style="margin-bottom: 15px;">コメント一覧</h3>
+        <p>ここにあなたのコメントが表示されます。</p>
+    </div>
+
+    <div id="likes-section" style="display: none;">
+        <h3 style="margin-bottom: 15px;">いいねした投稿</h3>
+        <p>ここにあなたが「いいね」した投稿が表示されます。</p>
+    </div>
+
+<div id="profile-section">
+    <div class="profile-card">
+        <h3>プロフィール編集</h3>
+
+        <div class="profile-item">
+            <label>ユーザーID</label>
+            <span id="profile-id"></span>
+        </div>
+
+        <div class="profile-item">
+            <label>ニックネーム</label>
+            <span id="profile-nickname"></span>
+        </div>
+
+        <div class="profile-item">
+            <label>メール</label>
+            <span id="profile-email-text"></span>
+
+            <!-- 이메일 변경 폼 (초기엔 숨겨져 있음) -->
+            <div id="email-edit-area" style="display: none;">
+            <input type="email" id="profile-email-input" class="styled-input" />
+            <button class="btn btn-confirm" onclick="submitEmailChange()">変更を確定</button>
+            </div>
+
+            <button class="btn btn-edit" onclick="showEmailEdit()">メール変更</button>
+        </div>
+
+        <div class="profile-item">
+            <label>パスワード</label>
+            <button class="btn btn-edit" style="margin-bottom: 10px;" onclick="openResetPwModalFromMyPage()">パスワード変更</button>
+            <button class="btn btn-danger" onclick="deleteAccount()">アカウント削除</button>
+        </div>
+
+</div>
+
+
+
+        
+    </div>
+</div>
+
+    
+</main>
+<main class="main-content" id="settingsContent" style="display: none;">
+  <h2 style="font-size: 28px; font-weight: 800; color: #e91e63; margin-bottom: 30px;">設定</h2>
+
+  <div style="
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            max-width: 600px;
+            width: 100%;
+            margin: 0 auto;
+            background-color: rgba(255,255,255,0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        ">
+    <!-- Language -->
+    <div>
+      <label style="font-weight: bold; display: block; margin-bottom: 8px;">言語選択</label>
+      <select style="width: 100%; padding: 10px; border-radius: 10px; border: 2px solid #e91e63;">
+        <option>日本語</option>
+        <option>한국어</option>
+        <option>English</option>
+      </select>
+      <small style="color: #e91e63; display: block; margin-top: 6px;">※現在サポートされていない機能です</small>
+    </div>
+
+    <!-- Dark Mode Toggle -->
+    <div>
+      <label style="font-weight: bold; display: block; margin-bottom: 8px;">ダークモード</label>
+      <label class="switch">
+        <input type="checkbox" id="darkModeToggle">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <!-- Email Toggle -->
+    <div>
+      <label style="font-weight: bold; display: block; margin-bottom: 8px;">イベント・新ガチャお知らせ受信</label>
+      <label class="switch">
+        <input type="checkbox" id="emailToggle">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <!-- Q&A -->
+    <div>
+      <h3 style="margin: 25px 0 15px; font-size: 20px;">Q&A</h3>
+      <div style="border: 1px solid #ddd; border-radius: 10px; padding: 15px;">
+        <p><strong>Q. ガチャはどこで回せますか？</strong><br>A. マップ画面から現在地に近いガチャを確認できます。</p>
+        <p><strong>Q. アカウントの削除方法は？</strong><br>A. マイページのプロフィール編集画面から申請できます。</p>
+        <p><strong>Q. 通知はオフにできますか？</strong><br>A. この設定画面でメール通知をオフにすることができます。</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script type="text/javascript" src="static/js/banner.js"></script>
+<script type="text/javascript" src="static/js/main.js"></script>
+<script type="text/javascript" src="static/js/rest.js"></script> 
+<div class="modal-overlay" id="loginModal">
+    <div class="modal">
+        <button class="modal-close" onclick="closeLoginModal()">&times;</button>
+        <h2 class="modal-title">ログイン</h2>
+        
+        <form onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label class="form-label" for="username">ユーザーID</label>
+                <input 
+                    type="text" 
+                    id="username" 
+                    class="form-input" 
+                    placeholder="ユーザーIDを入力してください"
+                    required
+                >
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="password">パスワード</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    class="form-input" 
+                    placeholder="パスワードを入力してください"
+                    required
+                >
+            </div>
+            
+            <button type="submit" class="form-btn">ログイン</button>
+            
+            <div class="form-links">
+                <a href="#" class="form-link" onclick="openFindIdModal(); return false;">ユーザーID検索</a>
+                <a href="#" class="form-link" onclick="openResetPwModal(); return false;">パスワード再設定</a>
+            </div>
+            
+            <div class="switch-link">
+                <span class="switch-text">アカウントをお持ちでない方は</span>
+                <button type="button" class="switch-btn" onclick="switchToSignup()">新規登録</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal-overlay" id="signupModal">
+    <div class="modal">
+        <button class="modal-close" onclick="closeSignupModal()">&times;</button>
+        <h2 class="modal-title">新規登録</h2>
+        
+        <form onsubmit="handleSignup(event)">
+            <div class="form-group">
+                <label class="form-label" for="signup-id">ユーザーID</label>
+                <div style="display: flex; gap: 10px;">
+                    <input 
+                            type="text" 
+                            id="signup-id" 
+                            class="form-input" 
+                            placeholder="ユーザーIDを入力してください"
+                            required
+                            minlength="4"
+                            maxlength="20"
+                            pattern="(?=.*[A-Za-z])[A-Za-z0-9]+"
+                            title="半角英字を含む英数字のみ使用できます。">
+                    <button type="button" onclick="checkDuplicate('id')" class="btn-small">確認</button>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="signup-nickname">ニックネーム</label>
+                <div style="display: flex; gap: 10px;">
+                <input 
+                    type="text" 
+                    id="signup-nickname" 
+                    class="form-input" 
+                    placeholder="ニックネームを入力してください"
+                    required
+                    minlength="2"
+                    maxlength="15"
+                    style="flex: 1;">
+                
+                <button type="button" onclick="checkDuplicate('nickname')" class="btn-small">確認</button> 
+              </div>
+
+              <small style="color: #888; display: block; margin-top: 5px;">
+                    ※ 2文字以上15文字以内で入力してください。
+              </small>
+           </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="signup-password">パスワード</label>
+                <input 
+                    type="password" 
+                    id="signup-password" 
+                    class="form-input" 
+                    placeholder="パスワードを入力してください"
+                    title="半角英字と数字を含めてください。" 
+                    required
+                    minlength="8"
+                    pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$"
+                    title="半角英字と数字を含めてください。">
+                <small style="color: #888; display: block; margin-top: 5px;">
+                    ※ 半角英字と数字を組み合わせて、8文字以上で入力してください。
+                </small>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="signup-password-confirm">パスワード確認</label>
+                <input 
+                    type="password" 
+                    id="signup-password-confirm" 
+                    class="form-input" 
+                    placeholder="もう一度パスワードを入力してください"
+                    title="もう一度同じパスワードを入力してください。" 
+                    required
+                    title="もう一度同じパスワードを入力してください。">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="signup-email">メールアドレス</label>
+                <input 
+                    type="email" 
+                    id="signup-email" 
+                    class="form-input" 
+                    placeholder="メールアドレスを入力してください"
+                    title="有効なメールアドレスを入力してください。" 
+                    required
+                    title="有効なメールアドレスを入力してください。">
+            </div>
+            
+            <button type="submit" class="form-btn">新規登録</button>
+            
+            <div class="switch-link">
+                <span class="switch-text">すでにアカウントをお持ちの方は</span>
+                <button type="button" class="switch-btn" onclick="switchToLogin()">ログイン</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal-overlay" id="findIdModal">
+    <div class="modal">
+        <button class="modal-close" onclick="closeFindIdModal()">&times;</button>
+        <h2 class="modal-title">ユーザーID検索</h2>
+        <form onsubmit="handleFindId(event)">
+            <div class="form-group">
+                <label class="form-label" for="find-id-email">メールアドレス</label>
+                <input 
+                    type="email" 
+                    id="find-id-email" 
+                    class="form-input" 
+                    placeholder="会員登録時のメールアドレスを入力してください"
+                    required
+                >
+            </div>
+            <button type="submit" class="form-btn">確認</button>
+            <div id="find-id-result" style="margin-top:15px; color:#e91e63; text-align:center; font-weight:600;"></div>
+        </form>
+    </div>
+</div>
+
+<div class="modal-overlay" id="resetPwModal">
+    <div class="modal">
+        <button class="modal-close" onclick="closeResetPwModal()">&times;</button>
+        <h2 class="modal-title">パスワード再設定</h2>
+        <form id="resetPwForm" onsubmit="handleResetPw(event)">
+            <div class="form-group">
+                <label class="form-label" for="reset-id">ユーザーID</label>
+                <input type="text" id="reset-id" class="form-input" placeholder="ユーザーIDを入力してください" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="reset-email">メールアドレス</label>
+                <input type="email" id="reset-email" class="form-input" placeholder="メールアドレスを入力してください" required>
+            </div>
+            <button type="submit" class="form-btn">確認</button>
+            <div id="reset-pw-result" style="margin-top:15px; color:#e91e63; text-align:center; font-weight:600;"></div>
+        </form>
+        <div id="reset-extra-fields" style="display:none;">
+            <div class="form-group">
+                <label class="form-label" for="reset-code">認証コード</label>
+                <input type="text" id="reset-code" class="form-input" placeholder="メールで届いた認証コードを入力してください" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="new-pw">新しいパスワード</label>
+                <input type="password" id="new-pw" class="form-input" placeholder="新しいパスワードを入力してください" required>
+            </div>
+            <button type="button" class="form-btn" onclick="handleResetConfirm()">パスワードを変更する</button>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

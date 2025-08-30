@@ -1,0 +1,202 @@
+/* Settings Page Specific Styles */
+
+.settings-title {
+    font-size: 28px;
+    font-weight: 800;
+    color: #e91e63;
+    margin-bottom: 30px;
+}
+
+.settings-container {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+    background-color: rgba(255,255,255,0.95);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.settings-item {
+    /* 각 설정 항목에 대한 유연한 레이아웃 */
+    display: flex;
+    flex-direction: column; /* 레이블과 컨트롤을 수직으로 정렬 */
+    gap: 8px; /* 레이블과 컨트롤 사이 간격 */
+}
+
+.settings-label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px; /* 기존 HTML의 margin-bottom과 일치 */
+}
+
+.settings-select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid #e91e63;
+}
+
+.settings-note {
+    color: #e91e63;
+    display: block;
+    margin-top: 6px;
+}
+
+/* Toggle Switch Styles */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #e91e63;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #e91e63;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* Q&A Section */
+.settings-qa {
+    margin-top: 25px; /* 기존 margin과 일치 */
+}
+
+.settings-qa-title {
+    margin-bottom: 15px; /* 기존 margin과 일치 */
+    font-size: 20px; /* 기존 font-size와 일치 */
+}
+
+.qa-content-box {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.qa-content-box p {
+    margin-bottom: 10px; /* 각 질문/답변 사이 간격 */
+    line-height: 1.6;
+}
+
+.qa-content-box p:last-child {
+    margin-bottom: 0; /* 마지막 질문/답변 아래 간격 제거 */
+}
+
+/* Dark Mode styles (added in JavaScript) */
+body.dark-mode {
+    background: #333; /* Darker background */
+    color: #eee; /* Lighter text */
+}
+
+body.dark-mode .header {
+    background: rgba(50, 50, 50, 0.95);
+    border-bottom-color: #555;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+body.dark-mode .logo-text {
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.3);
+}
+
+body.dark-mode .nav-menu {
+    background: rgba(50, 50, 50, 0.9);
+    border-top-color: #555;
+}
+
+body.dark-mode .nav-item a {
+    color: #bbb;
+}
+
+body.dark-mode .nav-item a:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #eee;
+}
+
+body.dark-mode .main-content {
+    background: #444;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
+    color: #eee;
+}
+
+body.dark-mode .search-input {
+    background: #555;
+    border-color: #666;
+    color: #eee;
+}
+
+body.dark-mode .search-input::placeholder {
+    color: #aaa;
+}
+
+body.dark-mode .search-input:focus {
+    border-color: #e91e63;
+    background: #555;
+    box-shadow: 0 4px 30px rgba(233, 30, 99, 0.2);
+}
+
+body.dark-mode .settings-container {
+    background-color: rgba(60,60,60,0.95);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+body.dark-mode .settings-select {
+    background-color: #555;
+    color: #eee;
+    border-color: #e91e63;
+}
+
+body.dark-mode .qa-content-box {
+    border-color: #666;
+}

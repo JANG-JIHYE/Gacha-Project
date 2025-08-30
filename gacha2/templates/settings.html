@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>設定 - ガチャコ</title>
+  <link rel="stylesheet" type="text/css" href="/static/css/main.css" />
+  <link rel="stylesheet" type="text/css" href="/static/css/mypage.css" />
+  <link rel="stylesheet" type="text/css" href="/static/css/settings.css" />
+</head>
+
+<body>
+<header class="header">
+  <div class="top-bar">
+    <a class="logo" href="/">
+      <span class="logo-text">ガチャコ</span>
+      <div class="gacha-machine">
+        <div class="machine-top"></div>
+        <div class="machine-body">
+          <div class="machine-window">
+            <div class="machine-ball"></div>
+          </div>
+        </div>
+        <div class="machine-controls">
+          <div class="control-button"></div>
+          <div class="control-knob"></div>
+        </div>
+      </div>
+    </a>
+    <div class="auth-buttons" id="authButtons">
+      <button class="btn btn-login" onclick="openLoginModal()">ログイン</button>
+      <button class="btn btn-signup" onclick="openSignupModal()">新規登録</button>
+    </div>
+  </div>
+  <nav class="nav-menu">
+    <ul class="nav-list">
+      <li class="nav-item"><a href="/gachainfopage">ガチャリスト</a></li>
+      <li class="nav-item"><a href="/map">ガチャマップ</a></li>
+      <li class="nav-item"><a href="/gacha_board">掲示板</a></li>
+      <li class="nav-item"><a href="/#mypage">マイページ</a></li>
+      <li class="nav-item"><a href="/settings">設定</a>
+    </ul>
+  </nav>
+</header>
+
+<main class="main-content" id="mypageContent" style="display: none;"></main>
+
+<main class="main-content" id="settingsContent" style="display: block;">
+  <h2 class="settings-title">設定</h2>
+  <div class="settings-container">
+    <div class="settings-item">
+      <label class="settings-label">言語選択</label>
+      <select class="settings-select">
+        <option>日本語</option>
+        <option>한국어</option>
+        <option>English</option>
+      </select>
+      <small class="settings-note">※現在サポートされていない機能です</small>
+    </div>
+
+    <div class="settings-item">
+      <label class="settings-label">ダークモード</label>
+      <label class="switch">
+        <input type="checkbox" id="darkModeToggle">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="settings-item">
+      <label class="settings-label">イベント・新ガチャお知らせ受信</label>
+      <label class="switch">
+        <input type="checkbox" id="emailToggle">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="settings-qa">
+      <h3 class="settings-qa-title">Q&A</h3>
+      <div class="qa-content-box">
+        <p><strong>Q. ガチャはどこで回せますか？</strong><br>A. マップ画面から現在地に近いガチャを確認できます。</p>
+        <p><strong>Q. アカウントの削除方法は？</strong><br>A. マイページのプロフィール編集画面から申請できます。</p>
+        <p><strong>Q. 通知はオフにできますか？</strong><br>A. この設定画面でメール通知をオフにすることができます。</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div id="searchResultSection" style="display:none; max-width:1200px; margin:40px auto; background:white; border-radius:20px; box-shadow:0 0 30px #e91e6322; padding:40px;">
+  <button onclick="window.location.href = '/'" style="float:right; background:#e91e63; color:white; border:none; border-radius:8px; padding:8px 18px; cursor:pointer;">← 後戻り</button>
+  <h2 id="searchResultTitle" style="margin-top:0"></h2>
+  <div id="searchResultBody"></div>
+</div>
+
+<div class="modal-overlay" id="loginModal"></div>
+<div class="modal-overlay" id="signupModal"></div>
+<div class="modal-overlay" id="findIdModal"></div>
+<div class="modal-overlay" id="resetPwModal"></div>
+
+<script src="/static/js/banner.js"></script>
+<script src="/static/js/main.js"></script>
+<script src="/static/js/rest.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const darkModeToggle = document.getElementById('darkModeToggle');
+  if (darkModeToggle) {
+    darkModeToggle.addEventListener('change', function() {
+      if (this.checked) {
+        document.body.classList.add('dark-mode');
+      } else {
+        document.body.classList.remove('dark-mode');
+      }
+    });
+  }
+});
+</script>
+
+</body>
+</html>

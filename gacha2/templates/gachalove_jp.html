@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ガチャコ - お気に入り</title>
+    <link rel="stylesheet" href="/static/css/gachalove_jp.css">
+
+
+</head>
+<body>
+    <header class="header">
+        <div class="top-bar">
+            <a href="/" class="logo">
+                <span class="logo-text">ガチャコ</span>
+                <div class="gacha-machine">
+                    <div class="machine-top"></div>
+                    <div class="machine-body">
+                        <div class="machine-window">
+                            <div class="machine-ball"></div>
+                        </div>
+                    </div>
+                    <div class="machine-controls">
+                        <div class="control-button"></div>
+                        <div class="control-knob"></div>
+                    </div>
+                </div>
+            </a>
+            
+            <div class="auth-buttons">
+                <a href="#" class="btn btn-login">ログイン</a>
+                <a href="#" class="btn btn-signup">新規登録</a>
+            </div>
+        </div>
+        
+        <nav class="nav-menu">
+            <ul class="nav-list">
+                <li class="nav-item"><a href="/gachainfopage" class="active">ガチャリスト</a></li>
+                <li class="nav-item"><a href="/map">ガチャマップ</a></li>
+                <li class="nav-item"><a href="/gacha_board">掲示板</a></li>
+                <li class="nav-item"><a href="/#mypage">マイページ</a></li>
+                <li class="nav-item"><a href="/settings">設定</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">お気に入り</h1>
+            <p class="page-subtitle">あなたがお気に入りに追加したガチャアイテム</p>
+        </div>
+
+        <!-- カテゴリータブ -->
+        <div class="category-tabs">
+            <a href="/gachainfopage" class="tab-button">人気商品</a>
+            <a href="/gachanewpage" class="tab-button">新商品</a>
+            <a href="/gachalove" class="tab-button active">お気に入り</a>
+        </div>
+
+        <!-- 検索ボックス -->
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" class="search-input" placeholder="お気に入りのガチャを検索してください...">
+                <button class="search-button">🔍</button>
+            </div>
+        </div>
+
+        <!-- ガチャグリッド -->
+        <div class="gacha-grid" id="gachaGrid">
+            <!-- ガチャアイテムは JavaScript로 생성 -->
+        </div>
+
+        <!-- 空の状態 -->
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <h3>お気に入りがありません</h3>
+            <p>気になるガチャアイテムを見つけて、ハートボタンを押してお気に入りに追加しましょう！</p>
+            <a href="/gachainfopage" class="btn">ガチャを探す</a>
+        </div>
+
+        <!-- ページネーション -->
+        <div class="pagination" id="pagination">
+            <button class="page-button active" onclick="changePage(1)">1</button>
+            <button class="page-button" onclick="changePage(2)">2</button>
+            <button class="page-button" onclick="changePage(3)">3</button>
+            <button class="page-button" onclick="changePage(4)">4</button>
+        </div>
+    </main>
+<script src="/static/js/gachalove_jp.js"defer></script>
+<script src="/static/js/authModal.js" defer></script>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+        updateAuthButtons();
+        });
+</script>
+</body>
+</html>

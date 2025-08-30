@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ガチャコ - 商品詳細</title>
+    <link rel="stylesheet" href="/static/css/gachadetailpage_jp.css">
+</head>
+<body>
+    <header class="header">
+        <div class="top-bar">
+            <a href="/" class="logo">
+                <span class="logo-text">ガチャコ</span>
+                <div class="gacha-machine">
+                    <div class="machine-top"></div>
+                    <div class="machine-body">
+                        <div class="machine-window">
+                            <div class="machine-ball"></div>
+                        </div>
+                    </div>
+                    <div class="machine-controls">
+                        <div class="control-button"></div>
+                        <div class="control-knob"></div>
+                    </div>
+                </div>
+            </a>
+            <div class="auth-buttons" id="authButtons">
+                <button class="btn btn-login" onclick="openLoginModal()">ログイン</button>
+                <button class="btn btn-signup" onclick="openSignupModal()">新規登録</button>
+            </div>
+        </div>
+        <nav class="nav-menu">
+            <ul class="nav-list">
+                <li class="nav-item"><a href="/gachainfopage">ガチャリスト</a></li>
+                <li class="nav-item"><a href="/map">ガチャマップ</a></li>
+                <li class="nav-item"><a href="/gacha_board">掲示板</a></li>
+                <li class="nav-item"><a href="/#mypage">マイページ</a></li>
+                <li class="nav-item"><a href="/settings">設定</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="main-container">
+        <div class="product-layout">
+            <div class="image-section">
+                <div class="main-image-container">
+                    <div class="main-image-text">画像</div>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h1 class="product-title">アイドル</h1>
+                <div class="product-meta">
+                    <div>
+                        <div class="label">発売日</div>
+                        <div class="value">0000-00-00</div>
+                    </div>
+                    <div>
+                        <div class="label">タグ</div>
+                        <div class="value">#0000 #0000 #0000</div>
+                    </div>
+                </div>
+                <div class="product-price">価格: 0000</div>
+                <div class="product-description">
+                    <h4>商品説明</h4>
+                    <p>suspendisse ultrices<br>
+                    gravida. Risus commodo<br>
+                    viverra maecenas<br>
+                    accumsan lacus vel<br>
+                    facilisis.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 모달 관련 HTML 삽입 -->
+    <!-- ✅ 이 아래 부분만 로그인/회원가입 모달 -->
+
+    <!-- 로그인 모달 -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeLoginModal()">&times;</button>
+            <h2 class="modal-title">ログイン</h2>
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label class="form-label" for="username">ユーザーID</label>
+                    <input type="text" id="username" class="form-input" placeholder="ユーザーIDを入力してください" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="password">パスワード</label>
+                    <input type="password" id="password" class="form-input" placeholder="パスワードを入力してください" required>
+                </div>
+                <button type="submit" class="form-btn">ログイン</button>
+                <div class="form-links">
+                    <a href="#" class="form-link" onclick="openFindIdModal(); return false;">ユーザーID検索</a>
+                    <a href="#" class="form-link" onclick="openResetPwModal(); return false;">パスワード再設定</a>
+                </div>
+                <div class="switch-link">
+                    <span class="switch-text">アカウントをお持ちでない方は</span>
+                    <button type="button" class="switch-btn" onclick="switchToSignup()">新規登録</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 회원가입 모달 -->
+    <div class="modal-overlay" id="signupModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeSignupModal()">&times;</button>
+            <h2 class="modal-title">新規登録</h2>
+            <form onsubmit="handleSignup(event)">
+                <div class="form-group">
+                    <label class="form-label" for="signup-id">ユーザーID</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="signup-id" class="form-input" placeholder="ユーザーIDを入力してください" required minlength="4" maxlength="20" pattern="(?=.*[A-Za-z])[A-Za-z0-9]+" title="半角英字を含む英数字のみ使用できます。">
+                        <button type="button" onclick="checkDuplicate('id')" class="btn-small">確認</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="signup-nickname">ニックネーム</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="signup-nickname" class="form-input" placeholder="ニックネームを入力してください" required minlength="2" maxlength="15" style="flex: 1;">
+                        <button type="button" onclick="checkDuplicate('nickname')" class="btn-small">確認</button>
+                    </div>
+                    <small style="color: #888; display: block; margin-top: 5px;">※ 2文字以上15文字以内で入力してください。</small>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="signup-password">パスワード</label>
+                    <input type="password" id="signup-password" class="form-input" placeholder="パスワードを入力してください" required minlength="8" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$" title="半角英字と数字を含めてください。">
+                    <small style="color: #888; display: block; margin-top: 5px;">※ 半角英字と数字を組み合わせて、8文字以上で入力してください。</small>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="signup-password-confirm">パスワード確認</label>
+                    <input type="password" id="signup-password-confirm" class="form-input" placeholder="もう一度パスワードを入力してください" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="signup-email">メールアドレス</label>
+                    <input type="email" id="signup-email" class="form-input" placeholder="メールアドレスを入力してください" required>
+                </div>
+                <button type="submit" class="form-btn">新規登録</button>
+                <div class="switch-link">
+                    <span class="switch-text">すでにアカウントをお持ちの方は</span>
+                    <button type="button" class="switch-btn" onclick="switchToLogin()">ログイン</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ID 찾기 모달 -->
+    <div class="modal-overlay" id="findIdModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeFindIdModal()">&times;</button>
+            <h2 class="modal-title">ユーザーID検索</h2>
+            <form onsubmit="handleFindId(event)">
+                <div class="form-group">
+                    <label class="form-label" for="find-id-email">メールアドレス</label>
+                    <input type="email" id="find-id-email" class="form-input" placeholder="会員가입時のメールアドレスを入力してください" required>
+                </div>
+                <button type="submit" class="form-btn">確認</button>
+                <div id="find-id-result" style="margin-top:15px; color:#e91e63; text-align:center; font-weight:600;"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 비밀번호 재설정 모달 -->
+    <div class="modal-overlay" id="resetPwModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeResetPwModal()">&times;</button>
+            <h2 class="modal-title">パスワード再設定</h2>
+            <form id="resetPwForm" onsubmit="handleResetPw(event)">
+                <div class="form-group">
+                    <label class="form-label" for="reset-id">ユーザーID</label>
+                    <input type="text" id="reset-id" class="form-input" placeholder="ユーザーIDを入力してください" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="reset-email">メールアドレス</label>
+                    <input type="email" id="reset-email" class="form-input" placeholder="メールアドレスを入力してください" required>
+                </div>
+                <button type="submit" class="form-btn">確認</button>
+                <div id="reset-pw-result" style="margin-top:15px; color:#e91e63; text-align:center; font-weight:600;"></div>
+            </form>
+            <div id="reset-extra-fields" style="display:none;">
+                <div class="form-group">
+                    <label class="form-label" for="reset-code">認証コード</label>
+                    <input type="text" id="reset-code" class="form-input" placeholder="メールで届いた認証コードを入力してください" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="new-pw">新しいパスワード</label>
+                    <input type="password" id="new-pw" class="form-input" placeholder="新しいパスワードを入力してください" required>
+                </div>
+                <button type="button" class="form-btn" onclick="handleResetConfirm()">パスワードを変更する</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/gachadetailpage_jp.js"></script>
+    <script src="/static/js/authModal.js" defer></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const loginForm = document.getElementById("loginForm");
+            if (loginForm) {
+                loginForm.addEventListener("submit", handleLogin);
+            }
+        });
+    </script>
+</body>
+</html>

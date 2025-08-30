@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>ガチャコ</title>
+    <!-- ======================= [css연결] ======================= -->
+    <link rel="stylesheet" href="../static/css/gacha_board.css">    
+    <script src="../static/js/rest.js" defer></script>      <!--js 연결위치 옮김(수정) -->
+</head>
+<body>
+    <header class="header">
+        <div class="top-bar">
+            <a class="logo" href="/" onclick="localStorage.removeItem('goToMypage')">
+    <span class="logo-text">ガチャコ</span>
+    <div class="gacha-machine">
+        <div class="machine-top"></div>
+        <div class="machine-body">
+            <div class="machine-window">
+                <div class="machine-ball"></div>
+            </div>
+        </div>
+        <div class="machine-controls">
+            <div class="control-button"></div>
+            <div class="control-knob"></div>
+        </div>
+    </div>
+</a>
+
+            <div class="auth-buttons">
+                <a class="btn btn-login" href="#" onclick="openLoginModal()">ログイン</a>
+                <a class="btn btn-signup" href="#" onclick="openSignupModal()">新規登録</a>
+            </div>
+        </div>
+        <nav class="nav-menu">
+            <ul class="nav-list">
+                <li class="nav-item"><a href="/gachainfopage">ガチャリスト</a></li>
+                <li class="nav-item"><a href="/map">ガチャマップ</a></li>
+                <li class="nav-item"><a href="/gacha_board">掲示板</a></li>
+                <li class="nav-item"><a href="/" onclick="localStorage.setItem('goToMypage', 'true')">マイページ</a></li>
+                <li class="nav-item"><a href="/settings" onclick="localStorage.setItem('goToSettings','true')">設定</a></li>
+
+            </ul>
+        </nav>
+    </header>
+<!------------------------------------------------ 게시판 html 시작 ---------------------------------------------------->
+    <!-- ======================= [메인 콘텐츠 영역] ======================= -->
+    <main class="main-content">
+
+        <!-- ================= [게시판 전체 컨테이너] ================= -->
+        <div class="board-container">
+            
+            <!-- 게시판 헤더 및 새 글 작성 버튼 -->
+            <div class="board-header">
+                <h1 class="board-title">ガチャコ掲示板</h1>
+                <button class="btn btn-write" onclick="showWriteForm()">新しい投稿を作成する</button>
+            </div>
+
+            <!-- ========== [글 작성 폼] ========== -->
+            <div class="write-form" id="writeForm" style="display: none;">
+                <h2 class="form-title">新しい記事作成</h2>
+                <!-- 카테고리 선택 -->
+                <div class="form-group">
+                    <select class="form-input" id="postTag">
+                        <option value="">カテゴリー</option>
+                        <option value="レビュー">レビュー</option>
+                        <option value="質問">質問</option>
+                        <option value="寄付">寄付</option>
+                        <option value="自由">自由</option>
+                    </select>
+                </div>
+                <!-- 제목 입력 -->
+                <div class="form-group">
+                    <input class="form-input" id="postTitle" placeholder="タイトルを入力してください" type="text"/>
+                </div>
+                <!-- 본문 입력 -->
+                <div class="form-group">
+                    <textarea class="form-textarea" id="postContent" placeholder="内容を入力いてください"></textarea>
+                </div>
+                <!-- 미디어 업로드 -->
+                <div class="form-group">
+                    <label class="media-upload-label" for="mediaUpload">
+                        <span class="upload-icon">📷</span> 写真・動画をアップロード
+                    </label>
+                    <input class="media-upload-input" id="mediaUpload" type="file" accept="image/*,video/*" multiple/>
+                    <div class="media-preview" id="mediaPreview"></div>
+                </div>
+                <!-- 작성 완료 / 취소 버튼 -->
+                <div class="form-buttons">
+                    <button class="btn btn-submit" onclick="submitPost()">記入完了</button>
+                    <button class="btn btn-cancel" onclick="hideWriteForm()">キャンセル</button>
+                </div>
+            </div>
+
+            <!-- ========== [글 수정 폼] ========== -->
+            <div class="edit-form" id="editForm" style="display: none;">
+                <h2 class="form-title">記事修正</h2>
+                <!-- 카테고리 선택 -->
+                <div class="form-group">
+                    <select class="form-input" id="editTag">
+                        <option value="">カテゴリー</option>
+                        <option value="レビュー">レビュー</option>
+                        <option value="質問">質問</option>
+                        <option value="寄付">寄付</option>
+                        <option value="自由">自由</option>
+                    </select>
+                </div>
+                <!-- 제목 입력 -->
+                <div class="form-group">
+                    <input class="form-input" id="editTitle" placeholder="タイトルを入力してください" type="text"/>
+                </div>
+                <!-- 본문 입력 -->
+                <div class="form-group">
+                    <textarea class="form-textarea" id="editContent" placeholder="内容を入力いてください"></textarea>
+                </div>
+                <!-- 미디어 업로드 -->
+                <div class="form-group">
+                    <label class="media-upload-label" for="editMediaUpload">
+                        <span class="upload-icon">📷</span> 写真・動画をアップロード
+                    </label>
+                    <input class="media-upload-input" id="editMediaUpload" type="file" accept="image/*,video/*" multiple/>
+                    <div class="media-preview" id="editMediaPreview"></div>
+                </div>
+                <!-- 수정 완료 / 취소 버튼 -->
+                <div class="form-buttons">
+                    <button class="btn btn-submit" onclick="updatePost()">修正完了</button>
+                    <button class="btn btn-cancel" onclick="hideEditForm()">キャンセル</button>
+                </div>
+            </div>
+
+            <!-- ========== [게시글 목록](수정) ========== -->
+            <div class="post-list" id="postList"></div>
+
+            <!-- ========== [게시글 상세 보기] ========== -->
+            <div class="post-detail" id="postDetail" style="display: none;">
+                <!-- 뒤로가기 버튼 -->
+                <div class="post-detail-header">
+                    <button class="btn-back" onclick="closePost()">← 戻る</button>
+                </div>
+
+                <!-- 상세 정보 -->
+                <div class="post-detail-content">
+                    <h1 class="post-detail-title" id="postDetailTitle"></h1>
+                    <div class="post-detail-meta">
+                        <span class="post-detail-author" id="postDetailAuthor"></span>
+                        <span class="post-detail-date" id="postDetailDate"></span>
+                    </div>
+                    <div class="post-detail-media" id="postDetailMedia"></div>
+                    <div class="post-detail-text" id="postDetailText"></div>
+
+                    <!-- 좋아요 기능 -->
+                    <div class="like-section" style="margin-top: 15px;"> 
+                        <button class="like-button" onclick="toggleLike(this, this.dataset.postId)" data-post-id="123">
+                            <span class="heart-icon">❤️</span>  
+                            <span class="like-count">0</span>    
+                        </button>
+                    </div>
+
+                    <!-- 수정 / 삭제 버튼 -->
+                    <div class="post-actions">
+                        <button class="btn-edit" onclick="editPost(currentPostId)">修正</button>
+                        <button class="btn-delete" onclick="deletePost(currentPostId)">削除</button>
+                    </div>
+
+                    <!-- 댓글 영역 -->
+                    <div class="comments-section">
+                        <h3 class="comments-title">コメント</h3>
+                        <!-- 댓글 작성 -->
+                        <div class="comment-form" id="commentForm">
+                            <textarea class="comment-textarea" id="commentContent" placeholder="コメントを入力してください"></textarea>
+                            <button class="comment-submit" onclick="submitComment()">コメント投稿</button>
+                        </div>
+                        <!-- 댓글 목록 -->
+                        <div class="comments-list" id="commentsList"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 페이지네이션(수정) -->
+            <div class="pagination"></div>
+    <!-- ======================= [로그인 모달](비번 재설정까지 수정) ======================= -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeLoginModal()">×</button>
+            <h2 class="modal-title">ログイン</h2>
+            <!-- ✅ onsubmit 이벤트 추가 -->
+            <form id="loginForm" onsubmit="handleLogin(event)"> 
+                <div class="form-group">
+                    <label for="username">ユーザーID</label>
+                    <input id="username" type="text" placeholder="ユーザーIDを入力してください" required class="form-input"/>
+                </div>
+                <div class="form-group">
+                    <label for="password">パスワード</label>
+                    <input id="password" type="password" placeholder="パスワードを入力してください" required class="form-input"/>
+                </div>
+                <button type="submit" class="form-btn">ログイン</button>
+                <div class="form-links"> <!-- 수정 -->
+                    <a href="#" class="form-link" onclick="openFindIdModal(); return false;">ユーザーID検索</a>
+                    <a href="#" class="form-link" onclick="openResetPwModal(); return false;">パスワード再設定</a>
+                </div>
+                <div class="switch-link">
+                    <span>アカウントをお持ちでない方は</span>
+                    <button type="button" class="switch-btn" onclick="switchToSignup()">新規登録</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ======================= [회원가입 모달] ======================= -->
+    <div class="modal-overlay" id="signupModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeSignupModal()">×</button>
+            <h2 class="modal-title">新規登録</h2>
+            <!-- ✅ onsubmit 이벤트 추가 -->
+            <form id="signupForm" onsubmit="handleSignup(event)">
+                <div class="form-group">
+                    <label for="signup-id">ユーザーID</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input id="signup-id" type="text" placeholder="ユーザーIDを入力してください" required minlength="4" maxlength="20" pattern="(?=.*[A-Za-z])[A-Za-z0-9]+" class="form-input"/>
+                        <button type="button" class="btn-small" onclick="checkDuplicate('id')">確認</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="signup-nickname">ニックネーム</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input id="signup-nickname" type="text" placeholder="ニックネームを入力してください" required minlength="2" maxlength="15" class="form-input"/>
+                        <button type="button" class="btn-small" onclick="checkDuplicate('nickname')">確認</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="signup-password">パスワード</label>
+                    <input id="signup-password" type="password" placeholder="パスワードを入力してください" required minlength="8" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$" class="form-input"/>
+                </div>
+                <div class="form-group">
+                    <label for="signup-password-confirm">パスワード確認</label>
+                    <input id="signup-password-confirm" type="password" placeholder="もう一度パスワードを入力してください" required class="form-input"/>
+                </div>
+                <div class="form-group">
+                    <label for="signup-email">メールアドレス</label>
+                    <input id="signup-email" type="email" placeholder="メールアドレスを入力してください" required class="form-input"/>
+                </div>
+                <button type="submit" class="form-btn">新規登録</button>
+                <div class="switch-link">
+                    <span>すでにアカウントをお持ちの方は</span>
+                    <button type="button" class="switch-btn" onclick="switchToLogin()">ログイン</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 아이디찾기 모달 -->
+    <div class="modal-overlay" id="findIdModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeFindIdModal()">&times;</button>
+            <h2 class="modal-title">ユーザーID検索</h2>
+            <form onsubmit="handleFindId(event)">
+                <div class="form-group">
+                    <label for="find-id-email">メールアドレス</label>
+                    <input type="email" id="find-id-email" class="form-input" placeholder="会員登録時のメールアドレスを入力してください" required>
+                </div>
+                <button type="submit" class="form-btn">確認</button>
+                <div id="find-id-result" style="margin-top:15px; color:#e91e63; text-align:center; font-weight:600;"></div>
+            </form>
+        </div>
+    </div>
+
+    <!--비밀번호 재설정 모달 -->
+<!-- 비밀번호 재설정 모달 -->
+    <div class="modal-overlay" id="resetPwModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeResetPwModal()">&times;</button>
+            <h2 class="modal-title">パスワード再設定</h2>
+            <form id="resetPwForm" onsubmit="handleResetPw(event)">
+                <div class="form-group">
+                    <label class="form-label" for="reset-id">ユーザーID</label>
+                    <input type="text" id="reset-id" class="form-input" placeholder="ユーザーIDを入力してください" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="reset-email">メールアドレス</label>
+                    <input type="email" id="reset-email" class="form-input" placeholder="メールアドレスを入力してください" required>
+                </div>
+                <button type="submit" class="form-btn">確認</button>
+                <div id="reset-pw-result" style="margin-top:15px; color:#e91e63; text-align:center; font-weight:600;">
+                </div>
+            </form>
+            <div id="reset-extra-fields" style="display:none;">
+                <div class="form-group">
+                    <label class="form-label" for="reset-code">認証コード</label>
+                    <input type="text" id="reset-code" class="form-input" placeholder="メールで届いた認証コードを入力してください" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="new-pw">新しいパスワード</label>
+                    <input type="password" id="new-pw" class="form-input" placeholder="新しいパスワードを入力してください" required>
+                </div>
+                <button type="button" class="form-btn" onclick="handleResetConfirm()">パスワードを変更する</button>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>
+    <!-- ======================= [JS 연결] ======================= -->
+    <script src="/static/js/gacha_board.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const loginForm = document.getElementById("loginForm");
+            if (loginForm) {
+                loginForm.addEventListener("submit", handleLogin);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<header class="header">
+<div class="top-bar">
+<a class="logo" href="http://3.35.212.25:8000/templates/gachaco_reallast_final.html">
+<span class="logo-text">ガチャコ</span>
+<div class="gacha-machine">
+<div class="machine-top"></div>
+<div class="machine-body">
+<div class="machine-window">
+<div class="machine-ball"></div>
+</div>
+</div>
+<div class="machine-controls">
+<div class="control-button"></div>
+<div class="control-knob"></div>
+</div>
+</div>
+<head>
+  <link rel="stylesheet" href="/static/mypage.css" />
+  <script src="/static/mypage.js"></script>
+</head>
+</a>
+<div class="auth-buttons">
+<button class="btn btn-login" onclick="openLoginModal()">ログイン</button>
+<button class="btn btn-signup" onclick="openSignupModal()">新規登録</button>
+</div>
+</div>
+<nav class="nav-menu">
+<ul class="nav-list">
+<li class="nav-item"><a href="#">ガチャリスト</a></li>
+<li class="nav-item"><a href="#">ガチャマップ</a></li>
+<li class="nav-item"><a href="#">掲示板</a></li>
+<li class="nav-item"><a href="#">マイページ</a></li>
+<li class="nav-item"><a href="#">設定</a></li>
+</ul>
+</nav>
+</header>
+<main class="main-content">
+  <h2 style="font-size: 28px; font-weight: 800; color: #e91e63; margin-bottom: 30px;">マイページ</h2>
+
+  <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 30px; justify-content: center;">
+    <button class="btn btn-login" onclick="showSection('favorite')">お気に入り</button>
+    <button class="btn btn-login" onclick="showSection('posts')">投稿一覧</button>
+    <button class="btn btn-login" onclick="showSection('comments')">コメント一覧</button>
+    <button class="btn btn-login" onclick="showSection('likes')">いいね一覧</button>
+    <button class="btn btn-login" onclick="showSection('profile')">プロフィール編集</button>
+  </div>
+
+  <div id="favorite-section" style="display: none;">
+    <h3 style="margin-bottom: 15px;">お気に入り</h3>
+    <button class="btn btn-small" onclick="alert('お気に入り商品一覧を表示')">お気に入り商品</button>
+    <button class="btn btn-small" onclick="alert('お気に入り店舗を表示')">お気に入り店舗</button>
+  </div>
+
+  <div id="posts-section" style="display: none;">
+    <h3 style="margin-bottom: 15px;">投稿した内容</h3>
+    <p>ここにあなたの投稿が表示されます。</p>
+  </div>
+
+  <div id="comments-section" style="display: none;">
+    <h3 style="margin-bottom: 15px;">コメント一覧</h3>
+    <p>ここにあなたのコメントが表示されます。</p>
+  </div>
+
+  <div id="likes-section" style="display: none;">
+    <h3 style="margin-bottom: 15px;">いいねした投稿</h3>
+    <p>ここにあなたが「いいね」した投稿が表示されます。</p>
+  </div>
+
+  <div id="profile-section" style="display: none;">
+    <h3 style="margin-bottom: 15px;">プロフィール編集</h3>
+    <p>ここにプロフィール編集画面が表示されます。</p>
+  </div>
+
+</main>
+
+<script src="static/mypage.js"></script>
